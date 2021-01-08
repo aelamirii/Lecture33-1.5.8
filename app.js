@@ -17,10 +17,11 @@ angular.module('ShoppingListComponentApp', [])
 });
 
 
-ShoppingListComponentController.$inject = ['$scope', '$element'];
-function ShoppingListComponentController($scope, $element) {
+ShoppingListComponentController.$inject = ['$element'];
+function ShoppingListComponentController($element) {
 
   var $ctrl_temps = this;
+  var totalItems;
 
   $ctrl_temps.findcookies = function () {
 
@@ -41,36 +42,37 @@ function ShoppingListComponentController($scope, $element) {
 
 
   $ctrl_temps.$onInit = function () {
-    console.log("on Init ");
+    totalItems = 0;
   };
 
   $ctrl_temps.$onChanges = function (changesObj) {
     console.log("Changes are :", changesObj);
   };
 
-  $ctrl_temps.$postLink = function () {
 
-    $scope.$watch('$ctrl.findcookies()', function (newValue, oldValue) {
-
-      console.log("$ctrl_temps Find cookies :", $ctrl_temps.findcookies());
-
-      console.log("Old Value :", oldValue);
-      console.log("New Value :", newValue);
-
-      if(newValue === true)
-      {
-        // Show Warning cookies
-        var WarningMessage = $element.find('div.error');
-        WarningMessage.slideDown(800);
-      }
-      else {
-        // Hide Warning cookies
-        var WarningMessage = $element.find('div.error');
-        WarningMessage.slideUp(800);
-      }
+  $ctrl_temps.$doCheck = function () {
 
 
-    });
+    if($ctrl_temps.listItems.getItems.length !== totalItems)
+    {
+      console.log("Totla Items = ", totalItems);
+      console.log("$ctrl_temps.listItems.getItems.length :", $ctrl_temps.listItems.getItems.length);
+
+    totalItems = $ctrl_temps.listItems.getItems.length;
+
+    if($ctrl_temps.findcookies())
+    {
+      console.log("Oh, cookies detected ");
+      var WarningElement = $element.find('div.error');
+      WarningElement.slideDown(800);
+    }
+    else {
+      var WarningElement = $element.find('div.error');
+      WarningElement.slideUp(800);
+      console.log("No cookies existed ");
+    }
+
+    }
 
   };
 
@@ -173,7 +175,7 @@ function ShoppingListController(ShoppingListFactory) {
 
   var ShoppingList = ShoppingListFactory();
 
-  list.ItemName = "cookies";
+  list.ItemName = "";
   list.ItemQuantity = "";
 
   list.getItems = ShoppingList.getItems();
