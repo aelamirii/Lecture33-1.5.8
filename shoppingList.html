@@ -1,0 +1,22 @@
+<h3> {{ $ctrl.title }}</h3>
+<ol>
+  <li ng-repeat = "item in $ctrl.listItems.getItems">
+    {{ item.quantity }} of {{ item.name }}
+    <!-- <button type="button" ng-click = "ListDirectiveController.listDirective.RemoveItem($index)">Remove Item</button> -->
+    <button type="button" ng-click = "$ctrl.remove( $index)">On Remove Item</button>
+  </li>
+</ol>
+
+<div class="error">
+  Warning cookies detected ............................  
+</div>
+
+
+
+<!-- <div class="error" ng-if = "$ctrl.findcookies()" >
+  Warning cookies detected ............................
+</div> -->
+
+<!-- <div class="error" ng-transclude>
+ Warning cookies detected ............................
+</div>   -->
